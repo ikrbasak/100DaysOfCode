@@ -1,2 +1,2 @@
 # 100DaysOfCode
-Codes that I solve during #100DaysOfCode challenge
+I have taken the #100DaysOfCode challenge. Each day I will be solving 5 problems from the Project Euler.
