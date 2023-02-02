@@ -1,0 +1,47 @@
+# https://projecteuler.net/problem=61
+# https://github.com/ikrbasak/100DaysOfCode
+# 02-02-2023
+
+import itertools
+
+
+def figurate_number(sides, n):
+    return n * ((sides - 2) * n - (sides - 4)) // 2
+
+
+def solution():
+    numbers = [[set() for j in range(100)] for i in range(9)]
+    for sides in range(3, 9):
+        for n in itertools.count(1):
+            num = figurate_number(sides, n)
+            if num >= 10000:
+                break
+            if num >= 1000:
+                numbers[sides][num // 100].add(num)
+
+    def find_solution_sum(begin, current, sidesused, sum):
+        if sidesused == 0b111111000:
+            if current % 100 == begin // 100:
+                return sum
+        else:
+            for sides in range(4, 9):
+                if (sidesused >> sides) & 1 != 0:
+                    continue
+                for num in numbers[sides][current % 100]:
+                    temp = find_solution_sum(
+                        begin, num, sidesused | (1 << sides), sum + num
+                    )
+                    if temp is not None:
+                        return temp
+            return None
+
+    for i in range(10, 100):
+        for num in numbers[3][i]:
+            temp = find_solution_sum(num, num, 1 << 3, num)
+            if temp is not None:
+                return str(temp)
+    raise AssertionError("No solution")
+
+
+if __name__ == "__main__":
+    print(solution())
